@@ -1,58 +1,53 @@
-@extends('layouts.app')
-
-@section('title', 'NMH03 - Cộng đồng chia sẻ kiến thức về mọi lĩnh vực')
-
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        <!-- Header Section -->
-        <div class="px-6 py-4 border-b">
-            <div class="text-sm text-gray-500 uppercase font-bold">
-                {{ $post->category->name ?? 'Danh mục' }}
+<header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/">
+            <div class="flex items-center space-x-4">
+                <img src="https://via.placeholder.com/50" alt="Logo" class="w-10 h-10">
+                <span class="text-xl font-bold text-blue-600">NMH03 BLOG</span>
             </div>
-            <h1 class="text-3xl font-bold text-gray-800 mt-2">
-                {{ $post->title ?? 'Tiêu đề bài viết' }}
-            </h1>
-            <div class="flex items-center mt-4">
-                <img src="{{ $post->author->avatar ?? asset('default-avatar.png') }}" alt="Author Avatar" class="w-12 h-12 rounded-full">
-                <div class="ml-3">
-                    <p class="text-gray-700 font-semibold">{{ $post->author->name ?? 'Tác giả' }}</p>
-                    <p class="text-gray-500 text-sm">{{ $post->created_at->format('M d, Y') ?? 'Ngày đăng' }}</p>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-6">
+            <a href="#" class="text-gray-700 hover:text-blue-600">Bài Viết</a>
+            <div class="relative group">
+                <a href="#" class="text-gray-700 hover:text-blue-600">Thể Loại</a>
+                <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-64 z-50">
+                    <a href="/the-loai/cong-nghe-va-lap-trinh" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Công nghệ và lập trình</a>
+                    <a href="/the-loai/suc-khoe-va-the-duc" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Sức khỏe và thể dục</a>
+                    <a href="/the-loai/du-lich" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Du lịch</a>
+                    <a href="/the-loai/tai-chinh-ca-nhan" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Tài chính cá nhân</a>
+                    <a href="/the-loai/phat-trien-ban-than" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Phát triển bản thân</a>
+                    <a href="/the-loai/giao-duc-va-hoc-tap" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Giáo dục và học tập</a>
+                    <a href="/the-loai/doi-song-va-gia-dinh" class="block px-4 py-2 text-gray-700 hover:bg-blue-100 hover:text-blue-600">Đời sống và gia đình</a>
                 </div>
             </div>
-        </div>
+            <a href="#" class="text-gray-700 hover:text-blue-600">Giới Thiệu</a>
+            <a href="#" class="text-gray-700 hover:text-blue-600">Liên Hệ</a>
+        </nav>
 
-        <!-- Reaction Section -->
-        <div class="px-6 py-4 flex items-center gap-4 border-b">
-            <span class="text-red-500 text-lg flex items-center gap-1">
-                ❤️ <span>{{ $post->likes ?? 0 }}</span>
-            </span>
-            <span class="text-blue-500 text-lg flex items-center gap-1">
-                🔄 <span>{{ $post->shares ?? 0 }}</span>
-            </span>
-            <button class="text-blue-600 hover:underline font-semibold">Share</button>
-        </div>
+        <!-- Right section -->
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Tìm kiếm..." class="px-4 py-2 border rounded-md text-sm">
 
-        <!-- Content Section -->
-        <div class="px-6 py-4">
-            <div class="prose max-w-none">
-                {!! $post->content ?? 'Không có nội dung' !!}
-            </div>
-        </div>
-
-        <!-- Comments Section -->
-        <div class="px-6 py-4 border-t">
-            <h4 class="text-lg font-bold mb-4">Bình luận</h4>
-            <form>
-                <div class="mb-4">
-                    <textarea class="w-full border rounded-lg p-3" id="comment" rows="3" placeholder="Nhập bình luận..."></textarea>
+            @if(Auth::check())
+                <!-- User Dropdown -->
+                <div class="relative group">
+                    <button class="text-gray-700 hover:text-blue-600 focus:outline-none">
+                        Xin chào, {{ Auth::user()->name }} 
+                    </button>
+                    <div class="absolute right-0 w-48 bg-white rounded-md shadow-lg hidden group-hover:block z-50">
+                        <a href="/thong-tin-tai-khoan" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-600">Thông tin tài khoản</a>
+                        <form method="POST" action="/dang-xuat">
+                            @csrf
+                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-600">Đăng xuất</button>
+                        </form>
+                    </div>
                 </div>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Gửi</button>
-            </form>
-            <div class="mt-6">
-                <p class="text-gray-600"><i class="fas fa-comment"></i> {{ $post->comments_count ?? 0 }} bình luận</p>
-            </div>
+            @else
+                <a href="/dang-nhap" class="text-blue-600 hover:underline">Đăng Nhập</a>
+            @endif
         </div>
     </div>
-</div>
-@endsection
+</header>
