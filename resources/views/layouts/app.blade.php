@@ -44,17 +44,26 @@
     width: auto !important; 
     height: auto !important;
 }
+@media screen and (max-width: 765px) {
+       .container {
+        width: 100% !important;
+        /* margin: 0 !important;
+        padding: 0 !important; */
+       }
+    
+}
 
     </style>
 </head>
 <body class="bg-gray-100 text-gray-900">
     @include('components.header')
 
-    <div class="container mx-auto mt-5">
+    <div class="container mx-auto" style="width:75%">
         @yield('content')  
     </div>
 
     @include('components.footer')
 </body>
+@yield('scripts')
 </html>
 

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     new Swiper('.mySwiper', {
-        loop: true, 
+        loop: true,
         autoplay: {
             delay: 3000,
             disableOnInteraction: false,
@@ -13,12 +13,27 @@ document.addEventListener("DOMContentLoaded", function () {
             el: ".swiper-pagination",
             clickable: true,
         },
-        slidesPerView: 1,
         spaceBetween: 10,
+        slidesPerView: 1, 
+        slidesPerGroup: 1,
+
         breakpoints: {
-            1024: { slidesPerView: 1 }, 
-            768: { slidesPerView: 1 }, 
-            480: { slidesPerView: 1 }, 
+            // Mobile (default): 1 slide
+            480: {
+                slidesPerView: 1,
+            },
+            // Tablet
+            768: {
+                slidesPerView: 2,
+            },
+            // Small desktop
+            1024: {
+                slidesPerView: 3,
+            },
+            // Full desktop
+            1280: {
+                slidesPerView: 4,
+            },
         },
     });
 });
