@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4">
     <h1 class="text-4xl font-bold mb-6 text-gray-800">🛠️ {{$title}}</h1>
 
     <!-- Filter + Search -->

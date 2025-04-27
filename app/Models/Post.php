@@ -16,4 +16,9 @@ class Post extends Model
     public function category(){
         return $this->belongsTo(Category::class,'category_id','_id');
     }
+
+    public static function getPost($slug){
+        return self::where('slug', $slug)->first();
+    }
+    
 }

@@ -10,6 +10,7 @@
 
         <img
             src="{{ $imageUrl }}"
+            style="height: 170px"
             alt="{{ $post->title ?? 'Không có tiêu đề' }}"
             onerror="this.onerror=null;this.src='{{ asset('images/default.webp') }}';"
             class="w-full h-[245px] object-cover rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"

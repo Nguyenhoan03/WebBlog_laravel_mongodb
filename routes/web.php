@@ -24,9 +24,9 @@ Route::get('/gioi-thieu', function() {
     return view('introBlog');
 });
 Route::group(['middleware' => 'verifyAccountLogin'], function () {
+    Route::post('/comment/{category}/{slug}', [DetailController::class, 'Post_comment']);
     Route::match(['post', 'delete'], '/update_like/{slug}', [DetailController::class, 'update_like']);
-    Route::post('/comment/{category}/{slug}', [DetailController::class, 'comment']);
-
+   
     Route::get('/{status}/post', [PostController::class, 'create']);
     Route::post('/{status}/post', [PostController::class, 'store']);
 
