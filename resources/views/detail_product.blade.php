@@ -38,7 +38,7 @@
                 <div class="flex gap-2">
                     <button onclick="btn_like()" class="btn_like flex items-center gap-1 border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-700">
                         <span>❤️</span>
-                        <span id="like-count">{{$data->likes}}</span>
+                        <span class="like-count">{{$data->likes}}</span>
                     </button>
                     <button class="flex items-center gap-1 border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-700">
                         <span>💬</span>
@@ -64,7 +64,7 @@
             <div class="flex gap-2">
                 <button onclick="btn_like()" class="btn_like flex items-center gap-1 border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-700">
                     <span>❤️</span>
-                    <span id="like-count">{{ $data->likes }}</span>
+                    <span class="like-count">{{ $data->likes }}</span>
                 </button>
                 <button class="flex items-center gap-1 border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-700">
                     <span>💬</span>
@@ -133,49 +133,68 @@
 
 @endsection
 <script src="{{ asset('js/swiper.js') }}"></script>
+
 <script>
     var slug = "{{ $data->slug }}";
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         let likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
-        if (likedPosts.includes(slug)) {
-            document.querySelector('.btn_like').classList.add('liked');
-        }
+
+        document.querySelectorAll('.btn_like').forEach(function (btn) {
+            if (likedPosts.includes(slug)) {
+                btn.classList.add('liked');
+            }
+
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                handleLike(btn);
+            });
+        });
     });
 
-    function btn_like() {
+    function handleLike(button) {
         let likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
         let isLiked = likedPosts.includes(slug);
         let method = isLiked ? 'DELETE' : 'POST';
-
         fetch(`/update_like/${slug}`, {
-                method: method,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    document.getElementById('like-count').innerText = data.likes;
-                    const btn = document.querySelector('.btn_like');
-                    if (isLiked) {
-                        likedPosts = likedPosts.filter(item => item !== slug);
-                        btn.classList.remove('liked');
-                    } else {
-                        likedPosts.push(slug);
-                        btn.classList.add('liked');
-                    }
-                    localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+            method: method,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "success") {
+                document.querySelectorAll('.like-count').forEach(span => {
+                    span.innerText = data.likes;
+                });
+                if (isLiked) {
+                    likedPosts = likedPosts.filter(item => item !== slug);
+                    button.classList.remove('liked');
                 } else {
-                    alert('Đã xảy ra lỗi, vui lòng thử lại sau!');
+                    likedPosts.push(slug);
+                    button.classList.add('liked');
                 }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Lỗi kết nối đến máy chủ!');
-            });
+                localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+            } else {
+                alert('Đã xảy ra lỗi xử lý dữ liệu!');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            if (err.message.includes('Network')) {
+                alert('Kết nối máy chủ thất bại, vui lòng kiểm tra mạng!');
+            } else {
+                alert('Bạn cần đăng nhập để thực hiện hành động này!');
+            }
+        });
     }
 </script>
-<script src="{{ asset('js/handlecomment.js') }}"></script>
+
+

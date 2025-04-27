@@ -71,44 +71,18 @@
                 <div class="mt-4">
                     <h3 class="font-bold text-xl">Recommendations</h3>
                     <div class="">
+                        @foreach($data['recommendations'] as $recommendation)
+                        @if($recommendation->user)
                         <div class="flex items-center mt-4">
-                            <img src="https://substackcdn.com/image/fetch/w_80,h_80,c_fill,f_webp,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fd8eda296-dc41-4c88-8bcb-72364326b6b8_1080x1080.png"
-                                class="w-20 h-20 rounded-lg object-cover"
-                                alt="">
+                        <img src="{{ asset('images_avatar/' . ($recommendation->user->image_avatar ?? 'default-avatar.png')) }}" alt="Avatar" style="width:80px;height:80px">
                             <div class="ml-3">
-                                <p class="text-xl font-bold py-1">Title</p>
-                                <p>tên tác giả</p>
+                                <p class="text-xl font-bold ">{{ $recommendation->user->name }}</p>
+                                <p>{{ $recommendation->user->email }}</p>
+                                <p><small>{{ $recommendation->total_posts }} bài viết</small></p>
                             </div>
                         </div>
-
-                        <div class="flex items-center mt-4">
-                            <img src="https://substackcdn.com/image/fetch/w_80,h_80,c_fill,f_webp,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fd8eda296-dc41-4c88-8bcb-72364326b6b8_1080x1080.png" class="w-20 h-20 rounded-lg object-cover" alt="">
-                            <div class="ml-3">
-                                <p class="text-xl font-bold py-1">Title</p>
-                                <p>tên tác giả</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center mt-4">
-                            <img src="https://substackcdn.com/image/fetch/w_80,h_80,c_fill,f_webp,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fd8eda296-dc41-4c88-8bcb-72364326b6b8_1080x1080.png" class="w-20 h-20 rounded-lg object-cover" alt="">
-                            <div class="ml-3">
-                                <p class="text-xl font-bold py-1">Title</p>
-                                <p>tên tác giả</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center mt-4">
-                            <img src="https://substackcdn.com/image/fetch/w_80,h_80,c_fill,f_webp,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fd8eda296-dc41-4c88-8bcb-72364326b6b8_1080x1080.png" class="w-20 h-20 rounded-lg object-cover" alt="">
-                            <div class="ml-3">
-                                <p class="text-xl font-bold py-1">Title</p>
-                                <p>tên tác giả</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center mt-4">
-                            <img src="https://substackcdn.com/image/fetch/w_80,h_80,c_fill,f_webp,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fd8eda296-dc41-4c88-8bcb-72364326b6b8_1080x1080.png" class="w-20 h-20 rounded-lg object-cover" alt="">
-                            <div class="ml-3">
-                                <p class="text-xl font-bold py-1">Title</p>
-                                <p>tên tác giả</p>
-                            </div>
-                        </div>
+                        @endif
+                        @endforeach
                     </div>
                 </div>
 

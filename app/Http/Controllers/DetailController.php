@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Traits\PostHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class DetailController extends Controller
 {
@@ -49,7 +50,7 @@ class DetailController extends Controller
         if (!$post) {
             return response()->json(['status' => 'error', 'message' => 'Post not found'], 404);
         }
-
+        Log::info($post);
         if ($request->isMethod('post')) {
             $post->increment('likes');
         } elseif ($request->isMethod('delete')) {
