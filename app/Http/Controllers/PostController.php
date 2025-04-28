@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 class PostController extends Controller
 {
     public function create()
@@ -55,5 +55,16 @@ class PostController extends Controller
         }
 
         return response()->json(['error' => 'No file uploaded.'], 400);
+    }
+    public function tinymceUpload(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('uploads', 'public'); 
+            $url = asset('storage/' . $path);
+
+            Log::info('File uploaded: ' . $url);
+            return response()->json(['location' => $url]);
+        }
+        return response()->json(['error' => 'Không có file'], 400);
     }
 }

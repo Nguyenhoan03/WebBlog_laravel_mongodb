@@ -21,8 +21,6 @@ class VerifyAccountLogin
         if (Auth::check()) {
             return $next($request);
         }
-
-        // User is not logged in, redirect to login page or any other page
         return redirect('/dang-nhap');
     }
 }

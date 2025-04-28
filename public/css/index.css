@@ -18,7 +18,7 @@
     }
   
     .component_card {
-      width: 30% !important;
+     /* /width: 30% !important; */
       height: 30% !important;
     }
   }
@@ -42,6 +42,7 @@
       width: 46% !important;
       height: 30% !important;
     }
+    
   }
   
   /* Mobile: ≤ 765px */

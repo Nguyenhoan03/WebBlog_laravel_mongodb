@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4">
+<div class="mx-auto px-4 w-full">
     <h1 class="text-4xl font-bold mb-6 text-gray-800">🛠️ {{$title}}</h1>
 
     <!-- Filter + Search -->
@@ -13,21 +13,17 @@
 
     <!-- Swiper -->
     <div class="swiper mySwiper" style="height: 480px">
-    <div class="swiper-wrapper">
         @foreach ($data->chunk(3) as $chunk)
-            <div class="swiper-slide">
-                
+            <div class="swiper-slide ">
                     @foreach ($chunk as $post)
                         @include('components.card', ['post' => $post])
                     @endforeach
-                
             </div>
         @endforeach
-      
-    </div>
-    
-    <div class="swiper-pagination"></div>
+        <div class="swiper-pagination"></div>
     <div class="swiper-button-next"></div>
     <div class="swiper-button-prev"></div>
+    </div>
+
 </div>
-</div>
+<script src="{{ asset('js/swiper.js') }}"></script>

@@ -14,6 +14,24 @@
             color: #f44336;
             transition: all 0.3s ease;
         }
+        .swiper-button-next, .swiper-button-prev {
+            color: #007bff;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
     </style>
 </head>
 @section('content')
@@ -133,7 +151,6 @@
 
 @endsection
 <script src="{{ asset('js/swiper.js') }}"></script>
-
 <script>
     var slug = "{{ $data->slug }}";
 

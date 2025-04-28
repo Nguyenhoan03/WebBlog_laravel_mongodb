@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-6">Đăng bài viết mới</h1>
 
-    <form action="" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 bg-gray-100" >
+    <form action="" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 bg-gray-100">
         @csrf
 
         <!-- Tiêu đề -->
@@ -16,22 +16,25 @@
                    class="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                    placeholder="Nhập tiêu đề bài viết">
         </div>
+
+        <!-- Hình ảnh -->
         <div class="mb-4">
-            <label for="title" class="block font-medium text-gray-700 mb-2">Hình ảnh</label>
-            <input type="file" name="image" id="title"
-                   class="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                   placeholder="Nhập tiêu đề bài viết">
+            <label for="image" class="block font-medium text-gray-700 mb-2">Hình ảnh</label>
+            <input type="file" name="image" id="image"
+                   class="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-       
+
         <!-- Nội dung -->
         <div class="mb-6">
             <label for="content" class="block font-medium text-gray-700 mb-2">Nội dung</label>
-            <textarea name="content" id="editor" rows="10"
-          class="w-full border px-4 py-2 rounded-md focus:outline-none"
-          placeholder="Nhập nội dung bài viết"></textarea>
+            <textarea name="content" id="content" rows="10"
+                      class="w-full border px-4 py-2 rounded-md focus:outline-none"
+                      placeholder="Nhập nội dung bài viết"></textarea>
         </div>
+
+        <!-- Danh mục -->
         <div class="mb-4">
-            <label for="title" class="block font-medium text-gray-700 mb-2">Danh mục bài viết</label>
+            <label for="category_id" class="block font-medium text-gray-700 mb-2">Danh mục bài viết</label>
             <select name="category_id" id="category_id"
                     class="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Chọn danh mục</option>
@@ -41,7 +44,6 @@
             </select>
         </div>
 
-
         <button type="submit"
                 class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700">
             Đăng bài
@@ -50,67 +52,55 @@
 </div>
 @endsection
 
-
-<!-- CKEditor 5 Full Featured Build CDN -->
 @section('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+<!-- TinyMCE -->
+<script src="https://cdn.tiny.cloud/1/donqck5zduws5nsg3v5a4s9qn9jrel9nqssvt42u5x54sdoe/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 <script>
-    class MyUploadAdapter {
-        constructor(loader) {
-            this.loader = loader;
-        }
+tinymce.init({
+    selector: '#content',
+    height: 500,
+    plugins: 'image link media table code lists',
+    toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | code',
+    language: 'vi',
+    images_upload_url: '{{ route('tinymce.upload') }}',
+    images_upload_credentials: true,
+    setup: function (editor) {
+        editor.on('init', function (e) {
+            console.log('TinyMCE initialized.');
+        });
+    },
+    images_upload_handler: function (blobInfo, success, failure) {
+    return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
 
-        upload() {
-            return this.loader.file
-                .then(file => new Promise((resolve, reject) => {
-                    const data = new FormData();
-                    data.append('upload', file);
-                    data.append('_token', '{{ csrf_token() }}'); // Laravel CSRF
-
-                    fetch('{{ route('ckeditor.upload') }}', {
-                        method: 'POST',
-                        body: data
-                    })
-                    .then(response => response.json())
-                    .then(res => {
-                        if (res.url) {
-                            resolve({ default: res.url });
-                        } else {
-                            reject('Upload failed');
-                        }
-                    })
-                    .catch(() => reject('Upload error'));
-                }));
-        }
-
-        abort() {}
-    }
-
-    function MyCustomUploadAdapterPlugin(editor) {
-        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-            return new MyUploadAdapter(loader);
-        };
-    }
-
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            extraPlugins: [ MyCustomUploadAdapterPlugin ],
-            language: 'vi',
-            toolbar: [
-                'heading', '|',
-                'bold', 'italic', 'underline', '|',
-                'bulletedList', 'numberedList', '|',
-                'link', 'blockQuote', 'insertTable', 'imageUpload', '|',
-                'undo', 'redo'
-            ]
+        fetch('{{ route('tinymce.upload') }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            credentials: 'same-origin'
         })
-        .then(editor => {
-            window.editor = editor;
+        .then(response => response.json())
+        .then(result => {
+            if (result && result.location) {
+                success(result.location);
+                resolve(result.location);
+            } else {
+                failure('Upload ảnh thất bại');
+                reject('Upload ảnh thất bại');
+            }
         })
         .catch(error => {
-            console.error(error);
+            console.error('Upload lỗi:', error);
+            failure('Upload lỗi: ' + error.message);
+            reject(error);
         });
+    });
+}
+
+});
 </script>
 @endsection
-
-

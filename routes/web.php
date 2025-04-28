@@ -8,6 +8,15 @@ use App\Http\Controllers\DetailController;
 use App\Http\Controllers\PostController;
 use App\Models\Category;
 
+Route::group(['middleware' => 'verifyAccountLogin'], function () {
+    Route::post('/comment/{category}/{slug}', [DetailController::class, 'Post_comment']);
+    Route::match(['post', 'delete'], '/update_like/{slug}', [DetailController::class, 'update_like']);
+    Route::get('/{status}/post', [PostController::class, 'create']);
+    Route::post('/{status}/post', [PostController::class, 'store']);
+});
+
+Route::post('/tinymce/upload', [PostController::class, 'tinymceUpload'])->name('tinymce.upload');
+
 Route::get('/dang-nhap', [AuthController::class, 'login'])->name('login');
 Route::post('/dang-nhap', [AuthController::class, 'post_login']);
 Route::get('/', [HomeController::class, 'home'])->name('home');;
@@ -23,17 +32,9 @@ Route::get('/{category}/{slug}', [DetailController::class, 'index']);
 Route::get('/gioi-thieu', function() {
     return view('introBlog');
 });
-Route::group(['middleware' => 'verifyAccountLogin'], function () {
-    Route::post('/comment/{category}/{slug}', [DetailController::class, 'Post_comment']);
-    Route::match(['post', 'delete'], '/update_like/{slug}', [DetailController::class, 'update_like']);
-   
-    Route::get('/{status}/post', [PostController::class, 'create']);
-    Route::post('/{status}/post', [PostController::class, 'store']);
 
-    
-});
 
-Route::post('/ckediter/upload-image', [App\Http\Controllers\PostController::class, 'upload'])->name('ckeditor.upload');
+// Route::post('/ckediter/upload-image', [App\Http\Controllers\PostController::class, 'upload'])->name('ckeditor.upload');
 
 
 
