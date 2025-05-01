@@ -55,7 +55,6 @@
 @section('scripts')
 <!-- TinyMCE -->
 <script src="https://cdn.tiny.cloud/1/donqck5zduws5nsg3v5a4s9qn9jrel9nqssvt42u5x54sdoe/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-
 <script>
 tinymce.init({
     selector: '#content',

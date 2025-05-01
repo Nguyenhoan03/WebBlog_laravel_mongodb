@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('/css/index.css')}}">
 </head>
 
-@section('content')
+@section('content') 
 <div class="container mx-auto mt-3">
     @include('components.banner')
     <div class="mt-8">
