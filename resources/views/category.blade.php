@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'NMH03 - Cộng đồng chia sẻ kiến thức về mọi lĩnh vực')
+@php
+    $titles = $post->pluck('title')->implode(' | ');
+@endphp
+
+@section('title', 'NMH03 - Blog ' . $titles )
 
 @section('content')
 <div class="max-w-2xl mx-auto py-10 px-4">
-    <h1 class="text-4xl font-bold mb-6">#life-design</h1>
+    <h1 class="text-4xl font-bold mb-6">{{$category}}</h1>
 
     <div class="flex items-center justify-between">
         <div class="flex space-x-4 mb-6 border-b pb-2">

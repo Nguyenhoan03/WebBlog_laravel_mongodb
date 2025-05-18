@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;    
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Log;
 class AuthController extends Controller
 {
     protected $authService;
@@ -89,7 +90,7 @@ class AuthController extends Controller
             }
       
         } catch (Exception $e) {
-            dd($e->getMessage());
+            Log::info($e->getMessage());
         }
     }
 }

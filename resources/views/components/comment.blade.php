@@ -33,7 +33,7 @@
                 @csrf
                 <input type="hidden" name="category" value="{{$category}}">
                 <input type="hidden" name="slug" value="{{$slug}}">
-                <input type="hidden" name="parent_id" value="{{$comment->_id}}">
+                <input type="hidden" name="parent_id" value="{{$comment->id}}">
                 <div class="flex items-start">
                     <img src="{{ $user?->image_avatar ? asset('images_avatar/' . $user->image_avatar) : asset('images_avatar/default-avatar.jpg') }}" class="w-9 h-9 rounded-full mr-3" alt="Avatar">
                     <div class="flex-1">
@@ -53,12 +53,12 @@
         </div>
 
         <!-- reply con -->
-        @if ($comments->where('parent_comment_id', $comment->_id)->count() > 0)
+        @if ($comments->where('parent_comment_id', $comment->id)->count() > 0)
             <div class="pl-6 mt-2 border-l border-gray-200">
                 @include('components.comment', [
                     'comments' => $comments,
                     'data_auth_comment' => $data_auth_comment,
-                    'parentId' => $comment->_id
+                    'parentId' => $comment->id
                 ])
             </div>
         @endif

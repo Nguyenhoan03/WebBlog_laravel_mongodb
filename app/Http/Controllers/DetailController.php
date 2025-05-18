@@ -21,17 +21,15 @@ class DetailController extends Controller
         if (!$data) {
             return redirect()->route('home')->with('error', 'Bài viết không tồn tại');
         }
-        $getAuth = User::where('_id', $data->author_id)->select('name', '_id', 'image_avatar')->first();
-        $categoryId = Category::where('slug', $category)->first()->_id;
+        $getAuth = User::where('id', $data->author_id)->select('name', 'id', 'image_avatar')->first();
+        $categoryId = Category::where('slug', $category)->first()->id;
         $data_category_relate = $this->getPostsByCategoryOrRecent($categoryId, 7);
         $post_user_other = $this->getPostAuth($getAuth);
         
-        $comments = Comment::where('post_id', $data->_id)->orderBy('created_at', 'asc')->get();
+        $comments = Comment::where('post_id', $data->id)->orderBy('created_at', 'asc')->get();
         $userIds = $comments->pluck('user_id')->unique();
-        $auth_comments = User::whereIn('_id', $userIds)->select('name', '_id', 'image_avatar')->get()->keyBy('_id');
-        // dd($comments);
-
-        //dd($userIds, $auth_comments);
+        $auth_comments = User::whereIn('id', $userIds)->select('name', 'id', 'image_avatar')->get()->keyBy('id');
+       
         return view('detail_product', [
             'data' => $data,
             'category' => $category,
@@ -64,7 +62,7 @@ class DetailController extends Controller
 
     public function Post_comment($category, $slug, Request $request)
     {
-        $user_id = Auth::user()->_id;
+        $user_id = Auth::user()->id;
         $post = Post::getPost($slug);
 
         if (!$post) {
@@ -72,7 +70,7 @@ class DetailController extends Controller
         }
 
         Comment::create([
-            'post_id' => $post->_id,
+            'post_id' => $post->id,
             'user_id' => $user_id,
             'content' => $request->content,
             'parent_comment_id' => $request->parent_id,

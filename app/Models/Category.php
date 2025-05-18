@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use MongoDB\Laravel\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mongodb';
-    protected $collection = 'categories';
-
+    protected $table = 'categories';
+    public $timestamps = true;
     protected $fillable = ['name', 'slug', 'description'];
 
     public function posts()
     {
-        return $this->hasMany(Post::class, 'category_id', '_id');
+        return $this->hasMany(Post::class, 'category_id', 'id');
     }
 
     public static function getCategory()

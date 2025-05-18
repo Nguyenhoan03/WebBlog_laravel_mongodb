@@ -29,12 +29,9 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 
 Route::get('/the-loai/{category}', [CategoryController::class, 'index']);
 Route::get('/{category}/{slug}', [DetailController::class, 'index']);
-Route::get('/gioi-thieu', function() {
+Route::get('/gioi-thieu', function () {
     return view('introBlog');
 });
 
 
 // Route::post('/ckediter/upload-image', [App\Http\Controllers\PostController::class, 'upload'])->name('ckeditor.upload');
-
-
-

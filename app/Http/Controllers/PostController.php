@@ -27,13 +27,14 @@ class PostController extends Controller
         $imageName = time() . '.' . request()->image->getClientOriginalExtension();
         request()->image->move(public_path('upload/images'), $imageName);
         $validated['slug'] = Str::slug($validated['title']);
-        $validated['author_id'] = Auth::user()->_id;
+        $validated['author_id'] = Auth::user()->id;
         $validated['category_id'] = $request->input('category_id');
         $validated['image'] = $imageName;
         $validated['status'] = $status;
         $validated['views'] = 0;
         $validated['likes'] = 0;
         $validated['comments_count'] = 0;
+
 
         Post::create($validated);
 

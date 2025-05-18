@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'NMH03 - Blog Khoa Học & Nghệ Thuật Sống')
+@section('title', 'Giới thiệu về NMH03 - Blog Cộng đồng chia sẻ kiến thức về mọi lĩnh vực')
 
 @section('content')
 <div class="container mx-auto px-6 py-16 space-y-24 text-gray-800">

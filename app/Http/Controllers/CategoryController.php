@@ -13,10 +13,10 @@ class CategoryController extends Controller
     public function index($category)
     {
         $categoryId = Category::where('slug', $category)->first();
-        $data = Post::where('category_id', $categoryId->_id)
+        $data = Post::where('category_id', $categoryId->id)
             ->orderBy('created_at', 'desc')
-            ->paginate(5, ['_id', 'title', 'image','tag', 'slug', 'category_id', 'created_at','likes','comments_count']);
+            ->paginate(5, ['id', 'title', 'image', 'slug', 'category_id', 'created_at','likes','comments_count']);
        
-            return view('category', ['post' => $data]);   
+            return view('category', ['post' => $data, 'category' => $category]);   
          }
 }

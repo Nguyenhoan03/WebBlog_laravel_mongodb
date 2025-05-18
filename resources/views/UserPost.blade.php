@@ -39,7 +39,7 @@
                     class="w-full border px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Chọn danh mục</option>
                 @foreach($data_category as $category)
-                    <option value="{{ $category->_id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>

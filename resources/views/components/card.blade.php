@@ -1,6 +1,7 @@
 <!-- component card -->
 <div class="ml-3 component_card" style="width: {{ $imageWidth ?? 300 }}px;">
-    <a href="{{ url(optional($post->category)->slug . '/' . $post->slug) }}">
+<a href="{{ url(($post->category->slug ?? 'uncategorized') . '/' . $post->slug) }}">
+
         @php
             $isExternalImage = Str::startsWith($post->image, ['http://', 'https://']);
             $imageUrl = $isExternalImage

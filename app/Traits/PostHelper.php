@@ -10,7 +10,7 @@ trait PostHelper
 {
     public function getPostsByCategoryOrRecent($categoryId = null, $limit = 20)
     {
-        $query = Post::select('_id', 'title', 'content', 'image', 'slug', 'category_id', 'created_at','likes','comments_count')
+        $query = Post::select('id', 'title', 'content', 'image', 'slug', 'category_id', 'created_at','likes','comments_count')
             ->orderBy('created_at', 'desc')
             ->limit($limit);
 
@@ -27,7 +27,7 @@ trait PostHelper
 
     public function getPostAuth($getAuth) 
     {
-        return Post::where('author_id',$getAuth->_id)
+        return Post::where('author_id',$getAuth->id)
             ->orderBy('created_at', 'desc')
             ->limit(9)
             ->get();
